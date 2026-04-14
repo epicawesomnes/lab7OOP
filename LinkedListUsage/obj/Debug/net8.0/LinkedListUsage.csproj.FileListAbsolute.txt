@@ -16,3 +16,4 @@ E:\uni\OP 2\lab7\LinkedListUsage\obj\Debug\net8.0\refint\LinkedListUsage.dll
 E:\uni\OP 2\lab7\LinkedListUsage\obj\Debug\net8.0\LinkedListUsage.pdb
 E:\uni\OP 2\lab7\LinkedListUsage\obj\Debug\net8.0\LinkedListUsage.genruntimeconfig.cache
 E:\uni\OP 2\lab7\LinkedListUsage\obj\Debug\net8.0\ref\LinkedListUsage.dll
+E:\uni\OP 2\lab7\LinkedListUsage\obj\Debug\net8.0\LinkedListUsage.sourcelink.json

@@ -25,17 +25,24 @@ public class Program
         List list4 = new([-4, 6, 8, 7, 9, 15]);
         DisplayList(list4);
 
-        Console.WriteLine("1) Get the first multiple of 5");
-        Console.WriteLine($"{list4.GetFirstmultiple(5)}\n");
+        Console.WriteLine("1) Insert and delete node after 2nd node");
+        list4.InsertAfterSecondElement(5);
+        DisplayList(list4);
+        list4.DeleteNode(2);
+        Console.WriteLine("1.5)Delete new node");
+        DisplayList(list4);
 
-        Console.WriteLine("2) Get the amount of positive values");
+        Console.WriteLine("2) Get the first multiple of 5");
+        Console.WriteLine($"{list4.GetFirstMultiple(5)}\n");
+
+        Console.WriteLine("3) Get the amount of positive values");
         Console.WriteLine($"{list4.GetNumPositives()}\n");
 
-        Console.WriteLine("3) Get a new single linked list of nums more than 8");
+        Console.WriteLine("4) Get a new single linked list of nums more than 8");
         DisplayList(list4.GetListOfElementsBiggerThan(8));
 
-        Console.WriteLine("4) Delete nodes with values > avg");
-        list4.DeleteElementsBiggerThanAvarage();
+        Console.WriteLine("5) Delete nodes with values > avg");
+        list4.DeleteElementsBiggerThanAverage();
         DisplayList(list4);
 
         return 0;
