@@ -2,6 +2,7 @@ using System.Collections;
 using System.Net.NetworkInformation;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
+using System.Transactions;
 using System.Xml.XPath;
 using Microsoft.VisualBasic;
 
@@ -48,6 +49,11 @@ public class List : IEnumerable<Node>
     /// <param name="array">The array of integers used to populate the list.</param>
     public List(int[] array)
     {
+        if (array == null || array.Length == 0)
+        {
+            throw new ArgumentException("Array cannot be null or empty.");
+        }
+
         this.head = new();
         Node current = this.head;
         for (int i = 0; i < array.Length - 1; i++)
@@ -72,24 +78,24 @@ public class List : IEnumerable<Node>
     {
         get
         {
-            if (index > len - 1) {throw new IndexOutOfRangeException("Index is bigger than lenght of list");}
+            if (index > len - 1) {throw new IndexOutOfRangeException("Index is bigger than length of list");}
             
             Node current = this.head;
             for (int i = 0; i < index; i++)
             {
-                if (current.Next is null) { throw new NullReferenceException(); }
+                if (current.Next is null) { throw new IndexOutOfRangeException(); }
                 current = current.Next;
             }
             return current;
         }
         set
         {
-            if (index > len - 1) {throw new IndexOutOfRangeException("Index is bigger than lenght of list");}
+            if (index > len - 1) {throw new IndexOutOfRangeException("Index is bigger than length of list");}
             
             Node current = this.head;
             for (int i = 0; i < index; i++)
             {
-                if (current.Next is null) { throw new NullReferenceException(); }
+                if (current.Next is null) { throw new IndexOutOfRangeException(); }
                 current = current.Next;
             }
             current.Value = value.Value;
@@ -181,7 +187,7 @@ public class List : IEnumerable<Node>
     /// </summary>
     /// <param name="num">The number to check for multiples.</param>
     /// <returns>The value of the first multiple if found; otherwise, null.</returns>
-    public int? GetFirstmultiple(int num)
+    public int? GetFirstMultiple(int num)
     {
         foreach (var node in this)
         {
@@ -212,24 +218,106 @@ public class List : IEnumerable<Node>
     }
 
     /// <summary>
-    /// Appends the specified node to the end of the list.
+    /// Appends the specified node and its subsequent linked nodes to the end of the list.
     /// </summary>
-    /// <param name="node">The node to append.</param>
-    public void Append(Node node)
+    /// <param name="node">The starting node of the sequence to append.</param>
+    private void Append(Node node)
     {
+        int lenOfSubList = 1;
+
+        Node current = node;
+        while (current.Next is not null)
+        {
+            lenOfSubList++;
+            current = current.Next;
+        }
+
         this.Last().Next = node;
-        len++;
+        len += lenOfSubList;
+    }
+
+    /// <summary>
+    /// Appends all nodes from the specified list to the end of the current list.
+    /// </summary>
+    /// <param name="list">The list to append.</param>
+    private void Append(List list)
+    {
+        this.Last().Next = list.head;
+        len += list.len;
     }
 
     /// <summary>
     /// Appends a new node with the specified value to the end of the list.
     /// </summary>
     /// <param name="value">The value to append.</param>
-    public void Append(int value)
+    private void Append(int value)
     {
         this.Last().Next = new Node(value);
         len++;
     }
+
+    /// <summary>
+    /// Inserts a new node with the specified value after the second element.
+    /// If the list has 2 or fewer elements, the value is appended to the end.
+    /// </summary>
+    /// <param name="value">The value to insert.</param>
+    public void InsertAfterSecondElement(int value)
+    {
+        if (len <= 2)
+        {
+            this.Append(value);
+            return;
+        }
+
+
+        this[1].Next = new(value, this[2]);
+        len++;
+    }
+
+    /// <summary>
+    /// Inserts the specified node after the second element.
+    /// If the list has 2 or fewer elements, the node is appended to the end.
+    /// </summary>
+    /// <param name="node">The node to insert.</param>
+    /// <exception cref="ArgumentException">Thrown when the node has a non-null Next reference.</exception>
+    public void InsertAfterSecondElement(Node node)
+    {
+
+        if (len <= 2)
+        {
+            this.Append(node);
+            return;
+        }
+
+        if (node.Next is not null)
+        {
+            throw new ArgumentException("Node has next element not null");
+        }
+
+        node.Next = this[2];
+        this[1].Next = node;
+        len++;
+    }
+
+    /// <summary>
+    /// Inserts all nodes from the specified list after the second element.
+    /// If the current list has 2 or fewer elements, the specified list is appended to the end.
+    /// </summary>
+    /// <param name="list">The list of nodes to insert.</param>
+    public void InsertAfterSecondElement(List list)
+    {
+
+        if (len <= 2)
+        {
+            this.Append(list);
+            return;
+        }
+
+        list.Last().Next = this[2];
+        this[1].Next = list.head;
+        len += list.Len;
+    }
+
 
     /// <summary>
     /// Gets a new single linked list containing only nodes with values strictly greater than the given number.
@@ -256,7 +344,7 @@ public class List : IEnumerable<Node>
     /// Calculates the average value of all elements in the list.
     /// </summary>
     /// <returns>The average value as a double. Returns 0 if the list is empty.</returns>
-    public double GetAvarage()
+    public double GetAverage()
     {
         if (this.len == 0) return 0;
         
@@ -271,9 +359,9 @@ public class List : IEnumerable<Node>
     /// <summary>
     /// Removes all nodes from the list that have a value strictly greater than the current average.
     /// </summary>
-    public void DeleteElementsBiggerThanAvarage()
+    public void DeleteElementsBiggerThanAverage()
     {
-        double avg = this.GetAvarage();
+        double avg = this.GetAverage();
 
         for (int i = 0; i < this.len; )
         {
