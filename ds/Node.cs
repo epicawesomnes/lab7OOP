@@ -28,6 +28,10 @@ public class Node
         this.Next = next;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Node"/> class with the specified value.
+    /// </summary>
+    /// <param name="value">The integer value to store in the node.</param>
     public Node(int value)
     {
         this.Value = value;

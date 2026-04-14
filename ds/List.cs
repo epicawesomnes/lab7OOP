@@ -137,6 +137,10 @@ public class List : IEnumerable<Node>
         this.len -= 1;
     }
 
+    /// <summary>
+    /// Deletes the specified node from the list by matching value and next reference.
+    /// </summary>
+    /// <param name="node">The node to delete.</param>
     public void DeleteNode(Node node)
     {
         for (int i = 0; i < this.len; i++)
@@ -149,6 +153,10 @@ public class List : IEnumerable<Node>
         }
     }
 
+    /// <summary>
+    /// Returns an enumerator that iterates through the list.
+    /// </summary>
+    /// <returns>An enumerator that can be used to iterate through the collection of nodes.</returns>
     public IEnumerator<Node> GetEnumerator()
     {
         Node? current = this.head;
@@ -159,11 +167,20 @@ public class List : IEnumerable<Node>
         }
     }
 
+    /// <summary>
+    /// Returns an enumerator that iterates through the collection.
+    /// </summary>
+    /// <returns>An <see cref="IEnumerator"/> that can be used to iterate through the collection.</returns>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
 
+    /// <summary>
+    /// Returns the value of the first node that is a multiple of the specified number.
+    /// </summary>
+    /// <param name="num">The number to check for multiples.</param>
+    /// <returns>The value of the first multiple if found; otherwise, null.</returns>
     public int? GetFirstmultiple(int num)
     {
         foreach (var node in this)
@@ -177,6 +194,10 @@ public class List : IEnumerable<Node>
         return null;
     }
 
+    /// <summary>
+    /// Gets the total number of positive values in the list.
+    /// </summary>
+    /// <returns>The amount of positive node values.</returns>
     public int GetNumPositives()
     {
         int result = 0;
@@ -190,18 +211,31 @@ public class List : IEnumerable<Node>
         return result;
     }
 
+    /// <summary>
+    /// Appends the specified node to the end of the list.
+    /// </summary>
+    /// <param name="node">The node to append.</param>
     public void Append(Node node)
     {
         this.Last().Next = node;
         len++;
     }
 
+    /// <summary>
+    /// Appends a new node with the specified value to the end of the list.
+    /// </summary>
+    /// <param name="value">The value to append.</param>
     public void Append(int value)
     {
         this.Last().Next = new Node(value);
         len++;
     }
 
+    /// <summary>
+    /// Gets a new single linked list containing only nodes with values strictly greater than the given number.
+    /// </summary>
+    /// <param name="num">The threshold number.</param>
+    /// <returns>A new <see cref="List"/> of elements larger than <paramref name="num"/>.</returns>
     public List GetListOfElementsBiggerThan(int num)
     {
         List result = new();
@@ -218,6 +252,10 @@ public class List : IEnumerable<Node>
         return result;
     }
 
+    /// <summary>
+    /// Calculates the average value of all elements in the list.
+    /// </summary>
+    /// <returns>The average value as a double. Returns 0 if the list is empty.</returns>
     public double GetAvarage()
     {
         if (this.len == 0) return 0;
@@ -230,6 +268,9 @@ public class List : IEnumerable<Node>
         return sum / this.len;
     }
 
+    /// <summary>
+    /// Removes all nodes from the list that have a value strictly greater than the current average.
+    /// </summary>
     public void DeleteElementsBiggerThanAvarage()
     {
         double avg = this.GetAvarage();
